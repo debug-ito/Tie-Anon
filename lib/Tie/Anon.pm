@@ -4,6 +4,8 @@ use warnings;
 
 our $VERSION = "0.01";
 
+## NOTE: tie() returns undef if it fails.
+
 1;
 __END__
 
@@ -11,13 +13,57 @@ __END__
 
 =head1 NAME
 
-Tie::Anon - abstract
+Tie::Anon - tie anonymous array, hash, etc. and return it
 
 =head1 SYNOPSIS
 
+    use Tie::Anon qw(tiea);
+    use Tie::File;
+    
+    for my $line (@{tiea('Tie::File', "hoge.dat")}) {
+        print $line;
+    }
+
 =head1 DESCRIPTION
 
-=head1 SEE ALSO
+When I feel extremely lazy, I don't want to write
+
+    my $tied_arrayref = do {
+        tie my $a, "Tie::File", "hoge.dat";
+        \$a;
+    };
+
+With L<Tie::Anon>, you can do the same by
+
+    my $tied_arrayref = tiea("Tie::File", "hoge.dat");
+
+
+=head1 EXPORTABLE FUNCTIONS
+
+None of these functions are exported by default.
+You must import them explicitly.
+
+=head2 $tied_arrayref = tiea($class, @args)
+
+Create an anonymous array-ref, tie that array to the C<$class> with C<@args>,
+and return it.
+
+If C<tie()> fails, it returns C<undef>.
+
+=head2 $tied_hashref = tieh($class, @args)
+
+Create an anonymous hash-ref, tie that hash to the C<$class> with C<@args>,
+and return it.
+
+If C<tie()> fails, it returns C<undef>.
+
+=head2 $tied_scalarref = ties($class, @args)
+
+Create an anonymous scalar-ref, tie that scalar to the C<$class> with C<@args>,
+and return it.
+
+If C<tie()> fails, it returns C<undef>.
+
 
 =head1 REPOSITORY
 
