@@ -84,6 +84,19 @@ and return it.
 
 If C<tie()> fails, it returns C<undef>.
 
+=head1 SEE ALSO
+
+=over
+
+=item *
+
+L<perltie>
+
+=item *
+
+C<tie>, C<untie> and C<tied> in L<perlfunc>
+
+=back
 
 =head1 REPOSITORY
 
