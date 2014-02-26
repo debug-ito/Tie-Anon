@@ -1,7 +1,9 @@
 
 on 'test' => sub {
     requires 'Test::More' => "0";
-    requires 'Tie::StdArray' => "0";
+    requires 'Tie::Array' => "0";
+    requires 'Tie::Hash'  => "0";
+    requires 'Tie::Scalar'  => "0";
 };
 
 on 'configure' => sub {

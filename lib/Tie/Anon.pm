@@ -1,10 +1,30 @@
 package Tie::Anon;
 use strict;
 use warnings;
+use Exporter qw(import);
 
 our $VERSION = "0.01";
 
-## NOTE: tie() returns undef if it fails.
+our @EXPORT = our @EXPORT_OK = qw(tiea tieh ties);
+
+my %sigil_for = (
+    tiea => '@',
+    tieh => '%',
+    ties => '$'
+);
+
+foreach my $method (keys %sigil_for) {
+    my $sigil = $sigil_for{$method};
+    no strict 'refs';
+    *{$method} = eval(<<"DEF");
+sub {
+    my \$class = shift;
+    my \$result = tie(my ${sigil}tied, \$class, \@_);
+    return undef if not defined \$result;
+    return \\${sigil}tied;
+}
+DEF
+}
 
 1;
 __END__
@@ -29,8 +49,8 @@ Tie::Anon - tie anonymous array, hash, etc. and return it
 When I feel extremely lazy, I don't want to write
 
     my $tied_arrayref = do {
-        tie my $a, "Tie::File", "hoge.dat";
-        \$a;
+        tie my @a, "Tie::File", "hoge.dat";
+        \@a;
     };
 
 With L<Tie::Anon>, you can do the same by
