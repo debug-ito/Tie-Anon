@@ -1,5 +1,6 @@
 package Tie::Anon;
 use strict;
+no strict 'refs';
 use warnings;
 use Exporter qw(import);
 
@@ -15,7 +16,6 @@ my %sigil_for = (
 
 foreach my $method (keys %sigil_for) {
     my $sigil = $sigil_for{$method};
-    no strict 'refs';
     *{$method} = eval(<<"DEF");
 sub {
     my \$class = shift;
